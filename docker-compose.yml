@@ -1,0 +1,10 @@
+services:
+    bay-sign-server:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        environment:
+            - PUBLIC_KEY=
+        ports:
+            - "3002:3002"

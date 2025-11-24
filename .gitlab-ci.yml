@@ -1,0 +1,59 @@
+image: docker:latest
+
+stages:
+    - 📦 build
+    - 🚀 deploy
+
+variables:
+    IMAGE_TAG: $CI_DOCKER_REGISTRY/superrich-baysign
+    AWS_ECR_REPOSITORY: $AWS_ECR_REPOSITORY
+    AWS_ECR_REGISTRY: $AWS_ECR_REGISTRY
+    AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
+    AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+    AWS_DEFAULT_REGION: $AWS_DEFAULT_REGION
+
+Build Dev Booking:
+    stage: 📦 build
+    variables:
+        PORT: "4012"
+        PUBLIC_KEY: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCb65Px9+GSM/4QpEH8XQshO9Y7ZRNE+QQJfwcLQvuY2SZOd1NWLgclpxsQhL58Wt0nASzF0cTtCAZ4mE7gZsUR4S/snlOQYP1Zc+12JrPvxx2QYnsMmzf2zdJdMMRSzM7C/DAf3bEBMpF4x7kzKazgw46uHQBjQ6/Bgca1IJ2nbwIDAQAB"
+    script:
+        - docker compose -f docker-compose-dev.yml build
+        - docker compose -f docker-compose-dev.yml down || true
+        - docker compose -f docker-compose-dev.yml up -d
+    when: manual
+
+Build Dev QRPay:
+    stage: 📦 build
+    variables:
+        PORT: "4013"
+        PUBLIC_KEY: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCfP7JqQfdYZz22gz64btRiVJq2+s6iHUDt9VKEoVrNjJl6kS93n5WmDYS+B0ieRvjF/hTAHW+5kFpZaWQ9bpiRBe4o3dIrNITWonpIk6ki4KBarJP6eKYO3SCvnVddizDcOBnhPPKEK5haf2cY2l273lfluyUPzVlcOcuUbsrbAwIDAQAB"
+    script:
+        - docker compose -f docker-compose-dev.yml build
+        - docker compose -f docker-compose-dev.yml down || true
+        - docker compose -f docker-compose-dev.yml up -d
+    when: manual
+
+Build Prod Booking:
+    stage: 📦 build
+    variables:
+        PUBLIC_KEY: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCp9s3DEWzJ6HUeVB3BZFkXXMkxaQfnrEb3SrO5mQ0MCi/wBfcN0QCjnQlo8e5Y6qiXq7uYBa/fW8oXK3UY8SagLv25EKUIDKpgj4ODNICoBqZWXKG+F/Zb4J8YwBVtOOscVEhP9PJQlYVEKEnw4O0DvlxikzdRnNEWqf81n9RkUwIDAQAB"
+    script:
+        - docker compose -f docker-compose-prod.yml build --no-cache
+        - docker compose -f docker-compose-prod.yml down || true
+        - docker compose -f docker-compose-prod.yml up -d
+    when: manual
+    tags:
+        - spr-api-prod
+
+Build Prod QRPay:
+    stage: 📦 build
+    variables:
+        PUBLIC_KEY: "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCJ+3+U507kkJzFwClwEeShy5ouZnwJtW/U347GGeeF1YFbLXPHyl+7b2sqGNNrUQRwuM4R94rk2CnlZTPfLHPNPVlDjYf+HoTjJQuYpuvDeorcWdz28dZbwMlh3kuuil+pxfyrsOKB6VrhPOE9rVHLD/NDVoX+aHDSikvk4H7SPQIDAQAB"
+    script:
+        - docker compose -f docker-compose-prod.yml build --no-cache
+        - docker compose -f docker-compose-prod.yml down || true
+        - docker compose -f docker-compose-prod.yml up -d
+    when: manual
+    tags:
+        - spr-pay-cms-prod

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mvn compile:*)",
+      "Bash(mvn exec:java:*)",
+      "Bash(curl:*)",
+      "Bash(export:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
