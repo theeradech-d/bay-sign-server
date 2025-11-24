@@ -10,6 +10,12 @@ mvn install
 mvn clean package && java -jar target/sprbaysign-1.0-SNAPSHOT-jar-with-dependencies.jar
 ```
 
+## Run with Docker Compose
+
+```shell
+docker-compose up -d
+```
+
 ## Test Sign Data
 
 [POST] http://localhost:3002/sign
@@ -21,4 +27,13 @@ curl --location 'http://localhost:3002/sign' \
 --data '{
     "test":"test"
 }'
+```
+
+---
+
+## Build and Push Docker Image
+
+```shell
+docker build -t theeradechd/bay-sign-server:latest .
+docker push theeradechd/bay-sign-server:latest
 ```
