@@ -34,6 +34,6 @@ curl --location 'http://localhost:3002/sign' \
 ## Build and Push Docker Image
 
 ```shell
-docker build -t theeradechd/bay-sign-server:latest .
+docker buildx build --platform linux/amd64,linux/arm64 -t theeradechd/bay-sign-server:latest .
 docker push theeradechd/bay-sign-server:latest
 ```
